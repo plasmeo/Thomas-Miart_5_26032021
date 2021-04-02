@@ -1,38 +1,23 @@
-class fakeData {
+class ProductModel {
     constructor(objectID, picUrl, title, price, description, productType){
         this.ID = objectID;
         this.picUrl = picUrl;
         this.title = title;
-        this.price = price;
-        this.description = description;
-
-        switch (productType) {
-            case 'camera':
-                this.detail = 'lentilles';
-              break;
-            case 'peluche':
-                this.detail = 'couleurs';
-                break;
-            case 'meuble':
-                this.detail = 'vernis';
-              break;
-
-          }
+        this.price = price;    
     }
 }
-let newData = new fakeData ("00001", "./Assets/Pics/oak_1.jpg", "Premier Objet", "35.00", 'ceci est une table', 'meuble');
-let newData02 = new fakeData ("00002", "./Assets/Pics/teddy_1.jpg", "Second Objet", "15.00", 'ceci est un ourson en peluche', 'peluche');
-let newData03 = new fakeData ("00003", "./Assets/Pics/vcam_1.jpg", "Troisième Objet", "70.00", 'ceci est un appareil photo', 'camera');
 
-const itemsArray = [newData, newData02, newData03];
 
-const loadData = (data) => {
-    return[
-        data.ID,
-        data.picUrl,
-        data.title,
-        data.price,
-    ]
+const loadData = async (data) => {
+    const dataFromApi = await fetch("http://localhost:3000/api/teddies")
+    //console.log(dataFromApi);
+    const dataJson = await dataFromApi.json();
+     console.log(dataJson);
+
+
+
+
+    return dataJson.map( (item)=> new ProductModel (item._id, item.imageUrl, item.name, item.price))
 }
 
 const displayDataList = (dataList) => {
@@ -64,16 +49,9 @@ const buildObjectImg = (data, objectImgClass) =>{
 const buildObjectPrice = (data, objectPriceClass) => {
     const newPrice = document.createElement('p');
     newPrice.classList.add(objectPriceClass);
-    newPrice.textContent = data.price + " " + "€";
+    newPrice.textContent = data.price/100 + " " + "€";
     return newPrice;
 
-}
-
-const buildObjectDescription = (data, objectTextClass) => {
-    const newText = document.createElement('p');
-    newText.classList.add(objectTextClass);
-    newText.textContent = data.description;
-    return newText;
 }
 
 const addLink = (Url) =>{
@@ -87,9 +65,9 @@ const buildObject = (data, categoryList) => {
     const newDiv = buildNewDiv('objet');
     newDiv.style.margin = '20px';
 
-    const queryStr = data;
-    const usp = new URLSearchParams(queryStr);
-    console.log(usp.toString());
+    const queryStr = data.ID;
+    const usp = new URLSearchParams("_id=" + queryStr);
+    //console.log(usp.toString());
     
     const newLink = addLink('./details.html?' + usp.toString());
 
@@ -101,19 +79,21 @@ const buildObject = (data, categoryList) => {
     newDiv.appendChild(newObjectImg);
     const newObjectPrice = buildObjectPrice(data, 'objectPrice');
     newDiv.appendChild(newObjectPrice);
-    const newObjectDescription = buildObjectDescription(data, 'ObjectDescription');
-    newDiv.appendChild(newObjectDescription);
 }
 
 
-const init = () => {
+const init = async() => {
     const categoryList = document.getElementById("categoryList");
     categoryList.style.display = "Flex";
     categoryList.style.justifyContent = 'space-around';
 
-    buildObject(itemsArray[0], categoryList);
-    buildObject(itemsArray[1], categoryList);
-    buildObject(itemsArray[2], categoryList);
+    const data = await loadData({});
+    //console.log(data);
+    
+    for (let product of data){
+        buildObject(product, categoryList);
+    }
+
 
 }
 
