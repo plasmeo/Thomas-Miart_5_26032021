@@ -8,6 +8,29 @@
       <h1>Le panier</h1>
       <div id="shoppingCartList"></div>
       <h3 id="clearButton">clear Cart</h3>
+      <div id="infosContact">
+        <form action="#" onsubmit="validate();return false">
+          <fieldset>
+            <legend>Vos informations</legend>
+            <label for="firstName">Prénom</label>
+            <input type="text" id="firstName" required />
+            <label for="lastName">Nom</label>
+            <input type="text" id="lastName" required />
+            <label for="adress">Adresse</label>
+            <input type="text" id="adress" required />
+            <label for="city">Ville</label>
+            <input type="text" id="city" required />
+            <label for="email">email</label>
+            <input type="email" id="email" required />
+          </fieldset>
+          <input
+            type="submit"
+            id="validation"
+            name="validation"
+            value="Valider votre commande"
+          />
+        </form>
+      </div>
     </main>
   </body>
 </html>

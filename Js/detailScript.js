@@ -15,7 +15,7 @@ shoppingCart = localStorage;
 const loadData = async (data) => {
     const dataFromApi = await fetch("http://localhost:3000/api/teddies/")
     const dataJson = await dataFromApi.json();
-     console.log(dataJson);
+    // console.log(dataJson);
     return dataJson.map( (item)=> new ProductModel (item._id, item.imageUrl, item.name, item.price, item.colors))
 }
 
@@ -82,21 +82,25 @@ const buildObject = (data) => {
     const newObjectPrice = buildObjectPrice(data, 'objectPrice');
     newDiv.appendChild(newObjectPrice);
 
-    let i =0;
+
+
     for (let color of data.description){
         const newObjectDescription = buildObjectDescription(color, 'ObjectDescription');
         newDiv.appendChild(newObjectDescription);
-
         newObjectDescription.addEventListener('click', function() {
-            shoppingCart.setItem('item number ' + i, color);
-            console.log(shoppingCart);
-            i++;
+            let itemNumberInCart = shoppingCart.length;
+            let objectToPass = new ProductModel (data.ID, data.picUrl, data.title, data.price, color);
+            if (shoppingCart.length == 0){
+                shoppingCart.setItem("Item number " +itemNumberInCart, JSON.stringify(objectToPass));               
+            } else {
+                itemNumberInCart == shoppingCart.length;
+                shoppingCart.setItem("Item number " +itemNumberInCart, JSON.stringify(objectToPass));   
+            }
+            itemNumberInCart ++;
         })
     }
-
-    const newObjectDetail = buildObjectDetail(data, 'objectDetail');
-    newDiv.appendChild(newObjectDetail);
 }
+
 
 const init = async () => {
     const categoryList = document.getElementById("categoryList");
