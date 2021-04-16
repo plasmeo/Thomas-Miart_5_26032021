@@ -5,24 +5,37 @@
   </head>
   <body>
     <main id="main">
-      <h1>Le panier</h1>
-      <div id="shoppingCartList"></div>
-      <h3 id="clearButton">clear Cart</h3>
-      <div id="infosContact">
+      <h1 style="margin-left: 20px">Le panier</h1>
+      <div id="shoppingCartList" style="margin: 20px"></div>
+      <a
+        href="javascript:window.location.reload(true)"
+        style="font-size: 20px; color: black"
+        id="clearButton"
+        >clear Cart</a
+      >
+      <div id="infosContact" style="padding-top: 100px; max-width: 500px">
         <form action="#" onsubmit="validate();return false">
           <fieldset>
             <legend>Vos informations</legend>
+            <br />
+            <br />
             <label for="firstName">Prénom</label>
             <input type="text" id="firstName" required />
             <label for="lastName">Nom</label>
             <input type="text" id="lastName" required />
-            <label for="adress">Adresse</label>
-            <input type="text" id="adress" required />
+            <br />
+            <br />
+            <label for="address">Adresse</label>
+            <input type="text" id="address" required />
             <label for="city">Ville</label>
             <input type="text" id="city" required />
+            <br />
+            <br />
             <label for="email">email</label>
             <input type="email" id="email" required />
           </fieldset>
+          <br />
+          <br />
           <input
             type="submit"
             id="validation"

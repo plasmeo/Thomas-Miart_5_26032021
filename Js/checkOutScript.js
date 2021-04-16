@@ -12,17 +12,22 @@ class ProductModel {
 }
 
 class contact {
-    constructor (firstName, lastName, adress, city, email){
+    constructor (firstName, lastName, address, city, email){
         this.firstName = firstName;
         this.lastName = lastName;
-        this.adress = adress;
+        this.address = address;
         this.city = city;
         this.email = email;
     }
 }
 
 
-
+const sendData = () => {
+    fetch("http://localhost:3000/api/order", {
+        method: "POST",
+        body: "oui"
+    });
+}
 
 const loadData = async () => {
     const dataFromApi = await fetch("http://localhost:3000/api/teddies/")
@@ -41,6 +46,7 @@ const buildObjectTitle = (data, objectTitleClass) =>{
     const newTitle = document.createElement('h3');
     newTitle.classList.add(objectTitleClass);
     newTitle.textContent = data;
+    newTitle.style.fontSize = '1.7rem';
     return newTitle;
 }
 
@@ -48,7 +54,35 @@ const buildObjectDetail = (data, objectDetailClass) => {
     const newDetail = document.createElement('p');
     newDetail.classList.add(objectDetailClass);
     newDetail.textContent = data;
+    newDetail.style.fontSize = '1.5rem';
     return newDetail;
+}
+
+const buildEraseButton = (productInfos) => {
+    const newEraseButton = document.createElement('a');
+    newEraseButton.classList.add('eraseButton');
+    newEraseButton.textContent = 'Supprimer';
+    newEraseButton.style.textDecoration = 'underline';
+    newEraseButton.href="javascript:window.location.reload(true)"
+
+    newEraseButton.addEventListener('click', function() {
+        console.log(productInfos.ID + ' de couleur ' + productInfos.description + ' Supprimé')
+
+        for (let itemInCartNumber = 0; itemInCartNumber < shoppingCart.length; itemInCartNumber++){
+            let productNumber = shoppingCart.key(itemInCartNumber);
+            let productDetail = shoppingCart.getItem(productNumber);
+            const product = JSON.parse(productDetail);
+
+            if (product.ID = productInfos.ID && product.description == productInfos.description)
+            {
+                //console.log(productNumber);
+                shoppingCart.removeItem(productNumber);
+            }
+        }
+    })
+
+    return newEraseButton;
+    
 }
 
 const buildObject = (productInfos) => {    
@@ -61,6 +95,10 @@ const buildObject = (productInfos) => {
     newDiv.appendChild(newObjectTitle);
     const newObjectDetail = buildObjectDetail(productInfos.description, 'objectDetail');
     newDiv.appendChild(newObjectDetail);
+
+    const eraseButton = buildEraseButton(productInfos);
+    newDiv.appendChild(eraseButton);
+
 }
    
 
@@ -85,7 +123,7 @@ const listCart = async (categoryList) => {
 
          for (let product of data){
             if (product.ID == productInfos.ID){
-                buildObject(productInfos, categoryList);
+                buildObject(productInfos);
             }
     
         }
@@ -95,19 +133,16 @@ const listCart = async (categoryList) => {
 const validate = () => {
     const firstName = document.getElementById('firstName');
     const lastName = document.getElementById('lastName');
-    const adress = document.getElementById('adress');
+    const address = document.getElementById('address');
     const city = document.getElementById('city');
     const email = document.getElementById('email');
    // const validateButton = document.getElementById('validation');
-        let buyerContacts = new contact (firstName.value, lastName.value, adress.value, city.value, email.value);
-        console.log(buyerContacts);
-        shoppingCart.setItem("Buyer contact", JSON.stringify(buyerContacts));
-
-
-
+        let buyerContacts = new contact (firstName.value, lastName.value, address.value, city.value, email.value);
+        shoppingCart.setItem("contact", JSON.stringify(buyerContacts));
+       // sendData();
 }
 
-const init = async() => {
+const init = () => {
     addClearButton();
     const categoryList = document.getElementById("shoppingCartList");
     categoryList.style.display = "Flex";
