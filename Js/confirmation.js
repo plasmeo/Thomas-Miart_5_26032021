@@ -1,5 +1,6 @@
 shoppingCart = localStorage;
-
+let orderId;
+let orderedIds = [];
 
 class ProductModel {
     constructor(objectID, picUrl, title, price, description){
@@ -8,6 +9,16 @@ class ProductModel {
         this.title = title;
         this.price = price;
         this.description = description;
+    }
+}
+
+class contact {
+    constructor (firstName, lastName, address, city, email){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.email = email;
     }
 }
 
@@ -27,33 +38,67 @@ const buildInfos = (price, orderNumber) =>{
 const listCart = async () => {
     let sum = 0;
     for (let itemsInCartNumber = 0; itemsInCartNumber < shoppingCart.length; itemsInCartNumber++){
-        const productInfos = getID(itemsInCartNumber);
+        const productInfos = await getID(itemsInCartNumber);
         const data = await loadData();
 
         for (let product of data){
            if (product.ID == productInfos.ID){
-               sum += product.price;               
+               sum += product.price;  
+               let tempID = String(productInfos.ID)
+               orderedIds.push(tempID);  
+               console.log(sum);  
+               break;
            }
-   
-       }
+        }
    }
    const categoryList = document.getElementById("infos");
-   let orderText = buildInfos(sum, 01);
+   let orderText = buildInfos(sum, orderId);
    categoryList.appendChild(orderText);
    
 
 }
 
-const getID = (itemInCartNumber) =>{
+const getID = async (itemInCartNumber) =>{
     let productNumber = shoppingCart.key(itemInCartNumber);
     let productDetail = shoppingCart.getItem(productNumber);
-    const obj = JSON.parse(productDetail);
+    //console.log(productDetail);
+    const obj = await JSON.parse(productDetail);
     return obj;
 }
 
+const sendData = (data) => {
+    fetch("http://localhost:3000/api/teddies/order", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers:{
+            'Content-Type':'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(json => {
+       // console.log(json.orderId);
+        orderId = json.orderId;
+        shoppingCart.setItem('OrderId', JSON.stringify(json.orderId))
+    })
+    .catch(err => console.log('error getting response from order'));
+}
+
+const getContact = () => {
+    let infos = shoppingCart.getItem('contact');
+    let contactInfos = JSON.parse(infos);
+    return contactInfos;
+}
 
 const init = async() => {
     listCart();
+
+let contactInfos = getContact();
+        sendData({
+            contact : contactInfos,
+            products : ["5beaabe91c9d440000a57d96"]
+        });
+
+
 }
 
 init();

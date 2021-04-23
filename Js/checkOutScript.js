@@ -21,14 +21,6 @@ class contact {
     }
 }
 
-
-const sendData = () => {
-    fetch("http://localhost:3000/api/order", {
-        method: "POST",
-        body: "oui"
-    });
-}
-
 const loadData = async () => {
     const dataFromApi = await fetch("http://localhost:3000/api/teddies/")
     const dataJson = await dataFromApi.json();
@@ -113,7 +105,7 @@ const getID = (itemInCartNumber) =>{
     let productNumber = shoppingCart.key(itemInCartNumber);
     let productDetail = shoppingCart.getItem(productNumber);
     const obj = JSON.parse(productDetail);
-    return obj;
+    return obj
 } 
 
 const listCart = async (categoryList) => {
@@ -136,11 +128,26 @@ const validate = () => {
     const address = document.getElementById('address');
     const city = document.getElementById('city');
     const email = document.getElementById('email');
-   // const validateButton = document.getElementById('validation');
         let buyerContacts = new contact (firstName.value, lastName.value, address.value, city.value, email.value);
         shoppingCart.setItem("contact", JSON.stringify(buyerContacts));
-       // sendData();
 }
+
+const sendData = (data) => {
+    fetch("http://localhost:3000/api/teddies/order", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers:{
+            'Content-Type':'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(json => {
+        console.log(json.orderId);
+        shoppingCart.setItem('OrderId', json.orderId)
+    })
+    .catch(err => console.log('error getting response from order'));
+}
+
 
 const init = () => {
     addClearButton();

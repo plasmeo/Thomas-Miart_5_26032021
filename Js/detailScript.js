@@ -57,6 +57,7 @@ const buildObjectPrice = (data, objectPriceClass) => {
 const buildObjectDescription = (data, objectTextClass) => {
     const newText = document.createElement('p');
     newText.classList.add(objectTextClass);
+    newText.style.textDecoration = 'underline';
     newText.textContent = data;
     //console.log(data.description);
     return newText;
@@ -91,7 +92,8 @@ const buildObject = (data) => {
             let itemNumberInCart = shoppingCart.length;
             let objectToPass = new ProductModel (data.ID, data.picUrl, data.title, data.price, color);
             if (shoppingCart.length == 0){
-                shoppingCart.setItem("Item number " +itemNumberInCart, JSON.stringify(objectToPass));               
+                shoppingCart.setItem("Item number " +itemNumberInCart, JSON.stringify(objectToPass));  
+                             
             } else {
                 itemNumberInCart == shoppingCart.length;
                 shoppingCart.setItem("Item number " +itemNumberInCart, JSON.stringify(objectToPass));   
