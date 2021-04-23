@@ -45,8 +45,7 @@ const listCart = async () => {
            if (product.ID == productInfos.ID){
                sum += product.price;  
                let tempID = String(productInfos.ID)
-               orderedIds.push(tempID);  
-               console.log(sum);  
+               orderedIds.push(tempID);   
                break;
            }
         }
@@ -89,13 +88,13 @@ const getContact = () => {
     return contactInfos;
 }
 
-const init = async() => {
-    listCart();
-
+const init = async () => {
+    await listCart();
 let contactInfos = getContact();
+
         sendData({
             contact : contactInfos,
-            products : ["5beaabe91c9d440000a57d96"]
+            products : orderedIds
         });
 
 
