@@ -49,12 +49,8 @@ const listCart = async () => {
                break;
            }
         }
-   }
-   const categoryList = document.getElementById("infos");
-   let orderText = buildInfos(sum, orderId);
-   categoryList.appendChild(orderText);
-   
-
+   }  
+return sum
 }
 
 const getID = async (itemInCartNumber) =>{
@@ -65,8 +61,8 @@ const getID = async (itemInCartNumber) =>{
     return obj;
 }
 
-const sendData = (data) => {
-    fetch("http://localhost:3000/api/teddies/order", {
+const sendData = async (data) => {
+    return fetch("http://localhost:3000/api/teddies/order", {
         method: "POST",
         body: JSON.stringify(data),
         headers:{
@@ -75,7 +71,7 @@ const sendData = (data) => {
     })
     .then(response => response.json())
     .then(json => {
-       // console.log(json.orderId);
+        console.log(json.orderId);
         orderId = json.orderId;
         shoppingCart.setItem('OrderId', JSON.stringify(json.orderId))
     })
@@ -89,15 +85,19 @@ const getContact = () => {
 }
 
 const init = async () => {
-    await listCart();
+
 let contactInfos = getContact();
 
-        sendData({
+const sum = await listCart();  
+        await sendData({
             contact : contactInfos,
             products : orderedIds
         });
 
-
+        const categoryList = document.getElementById("infos");
+        let orderText = buildInfos(sum, orderId);
+        categoryList.appendChild(orderText);
+        console.log(JSON.stringify(orderedIds));
 }
 
 init();

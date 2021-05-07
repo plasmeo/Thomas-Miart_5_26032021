@@ -108,10 +108,11 @@ const getID = (itemInCartNumber) =>{
     return obj
 } 
 
-const listCart = async (categoryList) => {
+const listCart = async () => {
+    const data = await loadData();
     for (let itemsInCartNumber = 0; itemsInCartNumber < shoppingCart.length; itemsInCartNumber++){
         const productInfos = getID(itemsInCartNumber);
-         const data = await loadData();
+
 
          for (let product of data){
             if (product.ID == productInfos.ID){
@@ -155,7 +156,7 @@ const init = () => {
     categoryList.style.display = "Flex";
     categoryList.style.flexDirection = "column"
     categoryList.style.justifyContent = 'space-around';  
-    listCart(categoryList);
+    listCart();
 
 }
 

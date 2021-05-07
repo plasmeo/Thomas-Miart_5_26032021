@@ -11,8 +11,7 @@ class ProductModel {
 shoppingCart = localStorage;
 
 
-
-const loadData = async (data) => {
+const loadData = async () => {
     const dataFromApi = await fetch("http://localhost:3000/api/teddies/")
     const dataJson = await dataFromApi.json();
     // console.log(dataJson);
@@ -59,6 +58,7 @@ const buildObjectDescription = (data, objectTextClass) => {
     newText.classList.add(objectTextClass);
     newText.style.textDecoration = 'underline';
     newText.textContent = data;
+    newText.style.cursor= "pointer";
     //console.log(data.description);
     return newText;
 }
@@ -82,12 +82,19 @@ const buildObject = (data) => {
     newDiv.appendChild(newObjectImg);
     const newObjectPrice = buildObjectPrice(data, 'objectPrice');
     newDiv.appendChild(newObjectPrice);
-
-
+    const newdropDrow = buildObjectDescription('Colors', 'dropDown');
+    newDiv.appendChild(newdropDrow);
+    newdropDrow.addEventListener('click', function() {
+        let dropDownButtons = document.getElementsByClassName("ObjectDescription");
+        for (let button of dropDownButtons){
+            button.style.display = 'block';
+        }
+    })
 
     for (let color of data.description){
         const newObjectDescription = buildObjectDescription(color, 'ObjectDescription');
-        newDiv.appendChild(newObjectDescription);
+        newObjectDescription.style.display = "none";
+        newdropDrow.appendChild(newObjectDescription);
         newObjectDescription.addEventListener('click', function() {
             let itemNumberInCart = shoppingCart.length;
             let objectToPass = new ProductModel (data.ID, data.picUrl, data.title, data.price, color);
@@ -112,7 +119,7 @@ const init = async () => {
     const productID = getID("_id");
     //console.log(productID);
 
-    const data = await loadData(productID);
+    const data = await loadData();
 
     for (let product of data){
         if (product.ID == productID){

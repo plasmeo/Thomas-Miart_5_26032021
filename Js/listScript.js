@@ -1,5 +1,5 @@
 class ProductModel {
-    constructor(objectID, picUrl, title, price, description, productType){
+    constructor(objectID, picUrl, title, price){
         this.ID = objectID;
         this.picUrl = picUrl;
         this.title = title;
@@ -8,15 +8,11 @@ class ProductModel {
 }
 
 
-const loadData = async (data) => {
+const loadData = async () => {
     const dataFromApi = await fetch("http://localhost:3000/api/teddies")
     //console.log(dataFromApi);
     const dataJson = await dataFromApi.json();
      console.log(dataJson);
-
-
-
-
     return dataJson.map( (item)=> new ProductModel (item._id, item.imageUrl, item.name, item.price))
 }
 
@@ -51,7 +47,6 @@ const buildObjectPrice = (data, objectPriceClass) => {
     newPrice.classList.add(objectPriceClass);
     newPrice.textContent = data.price/100 + " " + "€";
     return newPrice;
-
 }
 
 const addLink = (Url) =>{
