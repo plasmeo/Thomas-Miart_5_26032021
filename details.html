@@ -1,14 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
+    <meta charset="utf-8" />
+    <title>Détail du produit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
     <script defer src="Js/detailScript.js"></script>
   </head>
-  <body>
-    <main id="main">
-      <h1>Le détail du produit</h1>
+  <body style="background-color: #f3e9f1">
+    <header>
+      <img
+        src="./Assets/Pics/Orinoco_logo.png"
+        class="img-fluid col-md-2"
+        alt="Responsive image"
+        style="padding-left: 30px;"
+      />
+      <nav
+        class="navbar navbar-expand-lg navbar-light"
+        style="background-color: #f4f3f4; padding-left: 30px;"
+      >
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="./index.html"
+                >Liste des produits</span
+              ></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./checkOut.html">Panier</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <main style="margin-top: 30px; margin-left: 30px; max-width: 90%;" id="main">
+      <h1 style="margin: 30px 0px;">Détail du produit</h1>
       <div id="categoryList"></div>
-      <div id="panier">
-        <a href="./checkOut.html"><h3>checkOut</h3></a>
+      <div id="panier" style="text-align: right; margin-top: 50px; margin-bottom: 100px;">
+        <button><a href="./checkOut.html" style='color: black;' ><h3>Panier</h3></a></button>
+
       </div>
     </main>
   </body>
